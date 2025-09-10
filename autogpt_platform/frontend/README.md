@@ -90,9 +90,9 @@ Every time a new Front-end dependency is added by you or others, you will need t
 - `pnpm types` - Run TypeScript type checking
 - `pnpm test` - Run Playwright tests
 - `pnpm test-ui` - Run Playwright tests with UI
-- `pnpm fetch:openapi` - Fetch OpenAPI spec from backend
+- `pnpm fetch:openapi` - Fetch OpenAPI spec from backend (requires backend to be running on port 8006; use `--offline` to skip network calls)
 - `pnpm generate:api-client` - Generate API client from OpenAPI spec
-- `pnpm generate:api` - Fetch OpenAPI spec and generate API client
+- `pnpm generate:api` - Fetch OpenAPI spec and generate API client (requires backend to be running or pass `--offline`)
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
@@ -102,6 +102,10 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 > You don't need to run the OpenAPI commands below to run the Front-end. You will only need to run them when adding or modifying endpoints on the Backend API and wanting to use those on the Frontend.
 
 This project uses an auto-generated API client powered by [**Orval**](https://orval.dev/), which creates type-safe API clients from OpenAPI specifications.
+
+> **Note**
+> The commands below require the backend to be running on `http://localhost:8006`.
+> Pass `--offline` to reuse an existing `openapi.json` without making network calls.
 
 ### How It Works
 
@@ -117,7 +121,7 @@ This project uses an auto-generated API client powered by [**Orval**](https://or
 # Fetch OpenAPI spec from backend and generate client
 pnpm generate:api
 
-# Only fetch the OpenAPI spec
+# Only fetch the OpenAPI spec (requires backend or use `--offline`)
 pnpm fetch:openapi
 
 # Only generate the client (after spec is fetched)

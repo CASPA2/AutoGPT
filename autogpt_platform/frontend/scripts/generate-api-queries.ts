@@ -9,6 +9,7 @@ import * as os from "os";
 function fetchOpenApiSpec(): void {
   const args = process.argv.slice(2);
   const forceFlag = args.includes("--force");
+  const offlineFlag = args.includes("--offline");
 
   const baseUrl = getAgptServerBaseUrl();
   const openApiUrl = `${baseUrl}/openapi.json`;
@@ -23,9 +24,22 @@ function fetchOpenApiSpec(): void {
 
   console.log(`Output path: ${outputPath}`);
   console.log(`Force flag: ${forceFlag}`);
+  console.log(`Offline flag: ${offlineFlag}`);
 
   // Check if local file exists
   const localFileExists = fs.existsSync(outputPath);
+
+  if (offlineFlag) {
+    console.log("⚠️ Offline mode enabled, skipping OpenAPI fetch");
+    if (localFileExists) {
+      console.log("✅ Using existing local OpenAPI spec file");
+    } else {
+      console.warn(
+        "⚠️ No local OpenAPI spec found; generation skipped in offline mode",
+      );
+    }
+    return;
+  }
 
   if (!forceFlag && localFileExists) {
     console.log("✅ Using existing local OpenAPI spec file");
@@ -67,8 +81,18 @@ function fetchOpenApiSpec(): void {
     if (fs.existsSync(tmpOutputPath)) {
       fs.unlinkSync(tmpOutputPath);
     }
-    console.error("❌ Failed to fetch OpenAPI spec:", error);
-    process.exit(1);
+
+    if (localFileExists) {
+      console.warn(
+        "⚠️ Failed to fetch OpenAPI spec, using existing local file instead",
+        error,
+      );
+    } else {
+      console.warn(
+        "⚠️ Failed to fetch OpenAPI spec and no local file present; skipping",
+        error,
+      );
+    }
   }
 }
 
