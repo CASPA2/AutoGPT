@@ -1,0 +1,28 @@
+name: build-installer
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'installers/**'
+      - '.github/workflows/installer.yml'
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec vitest packages/shared/src/env.test.ts --run
+      - run: pnpm run build:installer:win
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aio-vvg-installer-win
+          path: dist/Install-AIO-Viral-Video-Generator-*-x64.exe
