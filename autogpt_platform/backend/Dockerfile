@@ -22,6 +22,10 @@ RUN apt-get update --allow-releaseinfo-change --fix-missing \
     libssl-dev \
     postgresql-client
 
+# Install Python requirements needed for build steps
+COPY autogpt_platform/backend/requirements.txt /tmp/requirements.txt
+RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
+
 ENV POETRY_HOME=/opt/poetry
 ENV POETRY_NO_INTERACTION=1
 ENV POETRY_VIRTUALENVS_CREATE=true

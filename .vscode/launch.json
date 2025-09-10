@@ -29,15 +29,12 @@
     },
     {
       "name": "Backend",
-      "type": "debugpy",
+      "type": "python",
       "request": "launch",
-      "module": "backend.app",
-      "env": {
-        "OBJC_DISABLE_INITIALIZE_FORK_SAFETY": "YES"
-      },
-      "envFile": "${workspaceFolder}/backend/.env",
-      "justMyCode": false,
-      "cwd": "${workspaceFolder}/autogpt_platform/backend"
+      "program": "${workspaceFolder}/autogpt_platform/backend/backend/app.py",
+      "envFile": "${workspaceFolder}/.env",
+      "console": "integratedTerminal",
+      "justMyCode": true
     },
     {
       "name": "Marketplace",

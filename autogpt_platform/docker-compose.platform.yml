@@ -6,7 +6,8 @@
 # 5. CLI arguments - docker compose run -e VAR=value
 
 # Common backend environment - Docker service names
-x-backend-env: &backend-env # Docker internal service hostnames (override localhost defaults)
+x-backend-env:
+  &backend-env # Docker internal service hostnames (override localhost defaults)
   PYRO_HOST: "0.0.0.0"
   AGENTSERVER_HOST: rest_server
   SCHEDULER_HOST: scheduler_server
@@ -27,6 +28,7 @@ x-backend-env: &backend-env # Docker internal service hostnames (override localh
 # Common env_file configuration for backend services
 x-backend-env-files: &backend-env-files
   env_file:
+    - ../.env
     - backend/.env.default # Base defaults (always exists)
     - path: backend/.env # User overrides (optional)
       required: false
