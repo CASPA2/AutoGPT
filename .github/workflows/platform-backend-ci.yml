@@ -135,6 +135,9 @@ jobs:
       - name: Install Python dependencies
         run: poetry install
 
+      - name: Verify python-dotenv
+        run: python -c "import importlib.metadata as m; print('dotenv ok', m.version('python-dotenv'))"
+
       - name: Generate Prisma Client
         run: poetry run prisma generate
 

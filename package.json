@@ -1,0 +1,32 @@
+{
+  "name": "viral-video-generator",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@8.15.5",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "installers/*/bin"
+  ],
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm --parallel -r dev",
+    "test": "vitest",
+    "format": "prettier --write --no-error-on-unmatched-pattern apps/web/**/*.{ts,tsx,js,css,md,json} docs/**/*.{md} package.json",
+    "build:installer:win": "pnpm --filter @installers/aiox build && iscc installers/windows/setup.iss"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "typescript": "^5.3.3",
+    "vitest": "^0.34.6",
+    "ts-node": "^10.9.1",
+    "tsx": "^4.7.1",
+    "prettier": "^3.1.0",
+    "@playwright/test": "^1.43.0",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "jsdom": "^22.1.0",
+    "@vitejs/plugin-react": "^4.1.0"
+  }
+}

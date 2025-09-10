@@ -1,0 +1,12 @@
+{
+  "name": "@viral/shared",
+  "version": "0.1.0",
+  "main": "src/index.ts",
+  "type": "module",
+  "exports": {
+    "./env": "./src/env.ts"
+  },
+  "dependencies": {
+    "zod": "^3.22.2"
+  }
+}

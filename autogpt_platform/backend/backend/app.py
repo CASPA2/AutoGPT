@@ -1,14 +1,38 @@
 import logging
+from pathlib import Path
 from typing import TYPE_CHECKING
 
-from dotenv import load_dotenv
+logger = logging.getLogger(__name__)
 
-load_dotenv()
+try:
+    from dotenv import load_dotenv  # type: ignore
+
+    _HAVE_DOTENV = True
+except Exception:  # pragma: no cover - we fallback gracefully
+    _HAVE_DOTENV = False
+
+
+def _load_env() -> None:
+    """Load a .env if python-dotenv is available; try common locations."""
+    if not _HAVE_DOTENV:
+        logger.debug("python-dotenv not installed; skipping .env load")
+        return
+    candidates = [
+        Path(__file__).resolve().parents[2] / ".env",  # repo root/.env
+        Path(__file__).resolve().parents[1] / ".env",  # backend/.env
+        Path.cwd() / ".env",  # current working dir
+    ]
+    for p in candidates:
+        if p.exists():
+            load_dotenv(p, override=False)
+            logger.info("Loaded environment from %s", p)
+            break
+
+
+_load_env()
 
 if TYPE_CHECKING:
     from backend.util.process import AppProcess
-
-logger = logging.getLogger(__name__)
 
 
 def run_processes(*processes: "AppProcess", **kwargs):
